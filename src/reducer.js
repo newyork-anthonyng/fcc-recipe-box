@@ -1,5 +1,6 @@
 import { ADD_RECIPE, REMOVE_RECIPE, EDIT_RECIPE } from './actions';
 
+//const initialData = [];
 const initialData = [
 	{
 		id: 1,

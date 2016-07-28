@@ -1,12 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { createStore } from 'redux';
+import { Provider } from 'react-redux';
 import reducer from './reducer';
-import { Test } from './components.jsx';
+import { TestList } from './containers';
 
 const store = createStore(reducer);
 
 render(
-	<Test recipes={store.getState()} />,
+	<Provider store={store}>
+		<TestList />
+	</Provider>,
 	document.getElementById('app')
 );

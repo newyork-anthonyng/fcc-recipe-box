@@ -6,8 +6,8 @@ export function Test(props) {
 		<ul>
 			{recipes.map(recipe => (
 				<li key={recipe.id}>
-					<h1>{recipe.name}</h1>
-					<h2>{recipe.ingredients.toString()}</h2>
+					<h3>{recipe.name}</h3>
+					<h4>{recipe.ingredients.toString()}</h4>
 				</li>
 			))}
 		</ul>
