@@ -1,40 +1,49 @@
 import { ADD_RECIPE, REMOVE_RECIPE, EDIT_RECIPE } from './actions';
 
-//const initialData = [];
-const initialData = [
-	{
-		id: 1,
-		name: 'First recipe',
-		ingredients: [
-			'a',
-			'b',
-			'c'
-		]
-	},
-	{
-		id: 2,
-		name: 'Second recipe',
-		ingredients: [
-			'd',
-			'e',
-			'f'
-		]
-	}
-];
+const initialData = {
+	recipes: [
+		{
+			id: 1,
+			name: 'pie',
+			ingredients: [
+				'a',
+				'b',
+				'c'
+			]
+		},
+		{
+			id: 2,
+			name: 'pudding',
+			ingredients: [
+				'd',
+				'e',
+				'f'
+			]
+		}
+	]
+};
 
 export default function(state = initialData, action) {
+	let newRecipes;
 	switch(action.type) {
 		case ADD_RECIPE:
-			return [
-				...state,
-				action.data
-			];
+			const newRecipe = action.data;
+			newRecipes = state.recipes.slice(0);
+			newRecipes.push(newRecipe);
+
+			return Object.assign({}, state, {
+				recipes: newRecipes
+			});
 		case REMOVE_RECIPE:
-			return state.filter(recipe => {
+			newRecipes = state.recipes.filter(recipe => {
 				return recipe.id !== action.id;
 			});
+
+			return Object.assign({}, state, {
+				recipes: newRecipes
+			});
 		case EDIT_RECIPE:
-			return state.map(recipe => {
+			newRecipes = state.recipes.map(recipe => {
 				if(recipe.id === action.id) {
 					return Object.assign({}, recipe, {
 						name: action.name,
@@ -43,6 +52,10 @@ export default function(state = initialData, action) {
 				} else {
 					return recipe;
 				}
+			});
+
+			return Object.assign({}, state, {
+				recipes: newRecipes
 			});
 		default:
 			return state;

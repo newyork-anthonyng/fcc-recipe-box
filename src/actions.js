@@ -4,7 +4,7 @@ export const EDIT_RECIPE = 'EDIT_RECIPE';
 
 const uid = () => Math.random().toString(34).slice(2);
 
-export function addRecipe(name, ingredients) {
+export function addRecipe({ name, ingredients }) {
 	return {
 		type: ADD_RECIPE,
 		data: {
@@ -22,7 +22,7 @@ export function removeRecipe(id) {
 	};
 };
 
-export function editRecipe(id, name, ingredients) {
+export function editRecipe(id, {name, ingredients}) {
 	return {
 		type: EDIT_RECIPE,
 		id: id,
