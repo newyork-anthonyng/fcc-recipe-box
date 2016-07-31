@@ -13,6 +13,7 @@ const RecipeList = ({ recipes }) => {
 		<div className="recipe-list">
 			{recipes.map((recipe) => (
 				<Recipe key={recipe.id}
+					id={recipe.id}
 					recipeTitle={recipe.name}
 					ingredients={recipe.ingredients}
 				/>

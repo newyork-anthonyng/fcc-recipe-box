@@ -1,5 +1,6 @@
 import React from 'react';
 import IngredientList from '../containers/IngredientList';
+import { Button } from './Button';
 
 const Recipe = React.createClass({
 	getInitialState: function() {
@@ -9,7 +10,6 @@ const Recipe = React.createClass({
 	},
 
 	handleClick: function() {
-		console.log('you clicked on me');
 		this.setState({
 			ingredientsVisible: !this.state.ingredientsVisible
 		});
@@ -25,6 +25,7 @@ const Recipe = React.createClass({
 				<IngredientList
 					visible={this.state.ingredientsVisible}
 					ingredients={this.props.ingredients}
+					recipeId={this.props.id}
 				/>
 			</div>
 		);
