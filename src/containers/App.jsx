@@ -2,11 +2,14 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import RecipeList from './RecipeList';
+import AddRecipeButtonContainer from './AddRecipeButtonContainer';
 
 const App = (props) => {
+	console.log(props.addingRecipe);
 	return (
 		<div>
 			<RecipeList />
+			<AddRecipeButtonContainer />
 		</div>
 	);
 };

@@ -1,6 +1,7 @@
-import { ADD_RECIPE, REMOVE_RECIPE, EDIT_RECIPE } from './actions';
+import { ADD_RECIPE, REMOVE_RECIPE, EDIT_RECIPE, TOGGLE_ADD_RECIPE } from './actions';
 
 const initialData = {
+	addingRecipe: false,
 	recipes: [
 		{
 			id: 1,
@@ -56,6 +57,10 @@ export default function(state = initialData, action) {
 
 			return Object.assign({}, state, {
 				recipes: newRecipes
+			});
+		case TOGGLE_ADD_RECIPE:
+			return Object.assign({}, state, {
+				addingRecipe: !state.addingRecipe
 			});
 		default:
 			return state;
