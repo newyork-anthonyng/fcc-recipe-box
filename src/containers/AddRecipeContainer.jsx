@@ -1,11 +1,69 @@
 import React from 'react';
-import { RecipeInput } from '../components/RecipeInput';
+import { connect } from 'react-redux';
+import { Button } from '../components/Button';
+import { addRecipe, toggleAddRecipe } from '../actions';
 
+const AddRecipeContainer = React.createClass({
+	addRecipe: function() {
+		const name = this.myRecipeTitle.value;
+		const ingredients = this.myRecipeIngredients.value;
 
-export const AddRecipeContainer = () => {
-	return (
-		<div className="add-recipe">
-			<RecipeInput />
-		</div>
-	);
+		const hasEmptyFields = name === '' || ingredients === '';
+		if(hasEmptyFields) return;
+
+		this.props.saveNewRecipe({
+			name: name,
+			ingredients: ingredients.split(',')
+		});
+
+		this.myRecipeTitle.value = '';
+		this.myRecipeIngredients.value = '';
+		this.props.toggleAddRecipe();
+	},
+
+	render: function() {
+		return (
+			<div className="add-recipe">
+				<div className="recipe-input">
+					<label htmlFor="name">Name</label>
+					<input
+						type="text"
+						id="name"
+						placeholder="Enter recipe title"
+						ref={(ref) => this.myRecipeTitle = ref}
+					/>
+					<br />
+					<label htmlFor="ingredients">Ingredients</label>
+					<input
+						type="text"
+						id="ingredients"
+						placeholder="Enter comma separated list of ingredients"
+						ref={(ref) => this.myRecipeIngredients = ref}
+					/>
+				</div>
+				<Button
+					text={"Save Recipe"}
+					handleClick={this.addRecipe}
+				/>
+			</div>
+		);
+	}
+});
+
+const mapStateToProps = (state) => ({});
+
+const mapDispatchToProps = (dispatch) => {
+	return {
+		saveNewRecipe: (newRecipe) => {
+			dispatch(addRecipe(newRecipe));
+		},
+		toggleAddRecipe: () => {
+			dispatch(toggleAddRecipe());
+		}
+	};
 };
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(AddRecipeContainer);
