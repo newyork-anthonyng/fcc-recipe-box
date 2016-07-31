@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from '../components/Button';
 import { addRecipe, toggleAddRecipe } from '../actions';
+import { Utility } from '../utility';
 
 const AddRecipeContainer = React.createClass({
 	addRecipe: function() {
@@ -11,11 +12,25 @@ const AddRecipeContainer = React.createClass({
 		const hasEmptyFields = name === '' || ingredients === '';
 		if(hasEmptyFields) return;
 
-		this.props.saveNewRecipe({
+		const newRecipe = {
+			id: Utility.uid(),
 			name: name,
 			ingredients: ingredients.split(',')
-		});
+		};
+		this.saveRecipe(newRecipe);
 
+		this.resetForm();
+	},
+
+	saveRecipe: function(newRecipe) {
+		this.props.saveNewRecipe(newRecipe);
+
+		const newRecipes = this.props.recipes.slice(0);
+		newRecipes.push(newRecipe);
+		Utility.updateRecipes(newRecipes);
+	},
+
+	resetForm: function() {
 		this.myRecipeTitle.value = '';
 		this.myRecipeIngredients.value = '';
 		this.props.toggleAddRecipe();
@@ -50,7 +65,7 @@ const AddRecipeContainer = React.createClass({
 	}
 });
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = (state) => state;
 
 const mapDispatchToProps = (dispatch) => {
 	return {

@@ -1,27 +1,14 @@
-import { ADD_RECIPE, REMOVE_RECIPE, EDIT_RECIPE, TOGGLE_ADD_RECIPE } from './actions';
+import {
+	ADD_RECIPE,
+	REMOVE_RECIPE,
+	EDIT_RECIPE,
+	LOAD_RECIPES,
+	TOGGLE_ADD_RECIPE
+} from './actions';
 
 const initialData = {
 	addingRecipe: false,
-	recipes: [
-		{
-			id: 1,
-			name: 'pie',
-			ingredients: [
-				'a',
-				'b',
-				'c'
-			]
-		},
-		{
-			id: 2,
-			name: 'pudding',
-			ingredients: [
-				'd',
-				'e',
-				'f'
-			]
-		}
-	]
+	recipes: []
 };
 
 export default function(state = initialData, action) {
@@ -29,6 +16,7 @@ export default function(state = initialData, action) {
 	switch(action.type) {
 		case ADD_RECIPE:
 			const newRecipe = action.data;
+
 			newRecipes = state.recipes.slice(0);
 			newRecipes.push(newRecipe);
 
@@ -57,6 +45,10 @@ export default function(state = initialData, action) {
 
 			return Object.assign({}, state, {
 				recipes: newRecipes
+			});
+		case LOAD_RECIPES:
+			return Object.assign({}, state, {
+				recipes: action.recipes
 			});
 		case TOGGLE_ADD_RECIPE:
 			return Object.assign({}, state, {

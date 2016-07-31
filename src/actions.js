@@ -1,15 +1,14 @@
 export const ADD_RECIPE = 'ADD_RECIPE';
 export const REMOVE_RECIPE = 'REMOVE_RECIPE';
 export const EDIT_RECIPE = 'EDIT_RECIPE';
+export const LOAD_RECIPES = 'LOAD_RECIPES';
 export const TOGGLE_ADD_RECIPE = 'TOGGLE_ADD_RECIPE';
 
-const uid = () => Math.random().toString(34).slice(2);
-
-export function addRecipe({ name, ingredients }) {
+export function addRecipe({ id, name, ingredients }) {
 	return {
 		type: ADD_RECIPE,
 		data: {
-			id: uid(),
+			id: id,
 			name: name,
 			ingredients: ingredients
 		}
@@ -29,6 +28,13 @@ export function editRecipe(id, {name, ingredients}) {
 		id: id,
 		name: name,
 		ingredients: ingredients
+	};
+}
+
+export function loadRecipes(recipes) {
+	return {
+		type: LOAD_RECIPES,
+		recipes: recipes
 	};
 }
 
