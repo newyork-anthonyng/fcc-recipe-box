@@ -2,14 +2,15 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import RecipeList from './RecipeList';
-import AddRecipeButtonContainer from './AddRecipeButtonContainer';
+import ToggleAddRecipeButtonContainer from './ToggleAddRecipeButtonContainer';
+import { AddRecipeContainer } from '../containers/AddRecipeContainer';
 
 const App = (props) => {
-	console.log(props.addingRecipe);
 	return (
 		<div>
 			<RecipeList />
-			<AddRecipeButtonContainer />
+			<ToggleAddRecipeButtonContainer text="Add Recipe" />
+			{props.addingRecipe ? <AddRecipeContainer /> : null}
 		</div>
 	);
 };

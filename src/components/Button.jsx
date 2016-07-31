@@ -1,11 +1,11 @@
 import React from 'react';
 
 export const Button = (props) => {
-	const { handleClick, children } = props;
+	const { handleClick, text} = props;
 
 	return (
 		<button onClick={handleClick}>
-			{children}
+			{text}
 		</button>
 	);
 };

@@ -4,9 +4,7 @@ import { Button } from '../components/Button';
 import { toggleAddRecipe } from '../actions';
 
 const mapStateToProps = (state) => {
-	return {
-		children: 'Hello World'
-	};
+	return {};
 };
 
 const mapDispatchToProps = (dispatch) => {
