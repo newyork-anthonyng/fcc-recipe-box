@@ -17,17 +17,8 @@ const AddRecipeContainer = React.createClass({
 			name: name,
 			ingredients: ingredients.split(',')
 		};
-		this.saveRecipe(newRecipe);
-
-		this.resetForm();
-	},
-
-	saveRecipe: function(newRecipe) {
 		this.props.saveNewRecipe(newRecipe);
-
-		const newRecipes = this.props.recipes.slice(0);
-		newRecipes.push(newRecipe);
-		Utility.updateRecipes(newRecipes);
+		this.resetForm();
 	},
 
 	resetForm: function() {

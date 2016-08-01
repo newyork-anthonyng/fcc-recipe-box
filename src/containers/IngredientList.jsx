@@ -9,15 +9,6 @@ const IngredientList = React.createClass({
 	removeRecipe: function(e) {
 		e.stopPropagation();
 		this.props.removeRecipe(this.props.recipeId);
-		this.updateLocalStorage();
-	},
-
-	updateLocalStorage: function() {
-		const updatedRecipes = Utility.getRecipes().filter((recipe) => {
-			return recipe.id !== this.props.recipeId;
-		});
-
-		Utility.updateRecipes(updatedRecipes);
 	},
 
 	render: function() {

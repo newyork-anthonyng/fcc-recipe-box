@@ -13,6 +13,10 @@ const App = React.createClass({
 		this.props.loadRecipes(recipes);
 	},
 
+	componentDidUpdate: function(prevProps, prevState) {
+		Utility.updateRecipes(this.props.recipes);
+	},
+
 	render: function() {
 		return (
 			<div>
