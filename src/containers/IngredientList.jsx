@@ -1,11 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { removeRecipe } from '../actions';
+import { removeRecipe, toggleEditRecipe } from '../actions';
 import { Ingredient } from '../components/Ingredient';
 import { Button } from '../components/Button';
 import { Utility } from '../utility';
 
 const IngredientList = React.createClass({
+	editRecipe: function(e) {
+		e.stopPropagation();
+		this.props.toggleEditRecipe(this.props.recipeId);
+	},
+
 	removeRecipe: function(e) {
 		e.stopPropagation();
 		this.props.removeRecipe(this.props.recipeId);
@@ -22,6 +27,10 @@ const IngredientList = React.createClass({
 							</li>
 						))}
 					</ul>
+					<Button
+						handleClick={this.editRecipe}
+						text={"Edit Recipe"}
+					/>
 					<Button
 						handleClick={this.removeRecipe}
 						text={"Delete Recipe"}
@@ -43,6 +52,9 @@ const mapDispatchToProps = (dispatch) => {
 	return {
 		removeRecipe: (id) => {
 			dispatch(removeRecipe(id));
+		},
+		toggleEditRecipe: (id) => {
+			dispatch(toggleEditRecipe(id));
 		}
 	};
 };

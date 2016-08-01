@@ -3,6 +3,7 @@ export const REMOVE_RECIPE = 'REMOVE_RECIPE';
 export const EDIT_RECIPE = 'EDIT_RECIPE';
 export const LOAD_RECIPES = 'LOAD_RECIPES';
 export const TOGGLE_ADD_RECIPE = 'TOGGLE_ADD_RECIPE';
+export const TOGGLE_EDIT_RECIPE = 'TOGGLE_EDIT_RECIPE';
 
 export function addRecipe({ id, name, ingredients }) {
 	return {
@@ -41,5 +42,12 @@ export function loadRecipes(recipes) {
 export function toggleAddRecipe() {
 	return {
 		type: TOGGLE_ADD_RECIPE
+	};
+}
+
+export function toggleEditRecipe(id) {
+	return {
+		type: TOGGLE_EDIT_RECIPE,
+		id: id
 	};
 }

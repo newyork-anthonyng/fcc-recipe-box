@@ -3,11 +3,13 @@ import {
 	REMOVE_RECIPE,
 	EDIT_RECIPE,
 	LOAD_RECIPES,
-	TOGGLE_ADD_RECIPE
+	TOGGLE_ADD_RECIPE,
+	TOGGLE_EDIT_RECIPE
 } from './actions';
 
 const initialData = {
 	addingRecipe: false,
+	editingRecipe: false,
 	recipes: []
 };
 
@@ -53,6 +55,12 @@ export default function(state = initialData, action) {
 		case TOGGLE_ADD_RECIPE:
 			return Object.assign({}, state, {
 				addingRecipe: !state.addingRecipe
+			});
+		case TOGGLE_EDIT_RECIPE:
+			const newEditingRecipe = state.editingRecipe ? false : action.id;
+
+			return Object.assign({}, state, {
+				editingRecipe: newEditingRecipe
 			});
 		default:
 			return state;

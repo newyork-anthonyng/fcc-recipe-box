@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import RecipeList from './RecipeList';
 import ToggleAddRecipeButtonContainer from './ToggleAddRecipeButtonContainer';
 import AddRecipeContainer from '../containers/AddRecipeContainer';
+import EditRecipeContainer from '../containers/EditRecipeContainer';
 import { loadRecipes } from '../actions';
 import { Utility } from '../utility';
 
@@ -23,6 +24,7 @@ const App = React.createClass({
 				<RecipeList />
 				<ToggleAddRecipeButtonContainer />
 				{this.props.addingRecipe ? <AddRecipeContainer /> : null}
+				{this.props.editingRecipe ? <EditRecipeContainer /> : null}
 			</div>
 		);
 	}
