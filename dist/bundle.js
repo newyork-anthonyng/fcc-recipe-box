@@ -60,7 +60,9 @@
 
 	var _reducer2 = _interopRequireDefault(_reducer);
 
-	var _containers = __webpack_require__(202);
+	var _App = __webpack_require__(202);
+
+	var _App2 = _interopRequireDefault(_App);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -69,7 +71,7 @@
 	(0, _reactDom.render)(_react2.default.createElement(
 		_reactRedux.Provider,
 		{ store: store },
-		_react2.default.createElement(_containers.TestList, null)
+		_react2.default.createElement(_App2.default, null)
 	), document.getElementById('app'));
 
 /***/ },
@@ -22870,15 +22872,27 @@
 		var state = arguments.length <= 0 || arguments[0] === undefined ? initialData : arguments[0];
 		var action = arguments[1];
 
+		var newRecipes = void 0;
 		switch (action.type) {
 			case _actions.ADD_RECIPE:
-				return [].concat(_toConsumableArray(state), [action.data]);
+				var newRecipe = action.data;
+
+				newRecipes = state.recipes.slice(0);
+				newRecipes.push(newRecipe);
+
+				return Object.assign({}, state, {
+					recipes: newRecipes
+				});
 			case _actions.REMOVE_RECIPE:
-				return state.filter(function (recipe) {
+				newRecipes = state.recipes.filter(function (recipe) {
 					return recipe.id !== action.id;
 				});
+
+				return Object.assign({}, state, {
+					recipes: newRecipes
+				});
 			case _actions.EDIT_RECIPE:
-				return state.map(function (recipe) {
+				newRecipes = state.recipes.map(function (recipe) {
 					if (recipe.id === action.id) {
 						return Object.assign({}, recipe, {
 							name: action.name,
@@ -22888,6 +22902,24 @@
 						return recipe;
 					}
 				});
+
+				return Object.assign({}, state, {
+					recipes: newRecipes
+				});
+			case _actions.LOAD_RECIPES:
+				return Object.assign({}, state, {
+					recipes: action.recipes
+				});
+			case _actions.TOGGLE_ADD_RECIPE:
+				return Object.assign({}, state, {
+					addingRecipe: !state.addingRecipe
+				});
+			case _actions.TOGGLE_EDIT_RECIPE:
+				var newEditingRecipe = state.editingRecipe ? false : action.id;
+
+				return Object.assign({}, state, {
+					editingRecipe: newEditingRecipe
+				});
 			default:
 				return state;
 		};
@@ -22895,18 +22927,11 @@
 
 	var _actions = __webpack_require__(201);
 
-	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
-
-	//const initialData = [];
-	var initialData = [{
-		id: 1,
-		name: 'First recipe',
-		ingredients: ['a', 'b', 'c']
-	}, {
-		id: 2,
-		name: 'Second recipe',
-		ingredients: ['d', 'e', 'f']
-	}];
+	var initialData = {
+		addingRecipe: false,
+		editingRecipe: false,
+		recipes: []
+	};
 
 	;
 
@@ -22922,19 +22947,25 @@
 	exports.addRecipe = addRecipe;
 	exports.removeRecipe = removeRecipe;
 	exports.editRecipe = editRecipe;
+	exports.loadRecipes = loadRecipes;
+	exports.toggleAddRecipe = toggleAddRecipe;
+	exports.toggleEditRecipe = toggleEditRecipe;
 	var ADD_RECIPE = exports.ADD_RECIPE = 'ADD_RECIPE';
 	var REMOVE_RECIPE = exports.REMOVE_RECIPE = 'REMOVE_RECIPE';
 	var EDIT_RECIPE = exports.EDIT_RECIPE = 'EDIT_RECIPE';
+	var LOAD_RECIPES = exports.LOAD_RECIPES = 'LOAD_RECIPES';
+	var TOGGLE_ADD_RECIPE = exports.TOGGLE_ADD_RECIPE = 'TOGGLE_ADD_RECIPE';
+	var TOGGLE_EDIT_RECIPE = exports.TOGGLE_EDIT_RECIPE = 'TOGGLE_EDIT_RECIPE';
 
-	var uid = function uid() {
-		return Math.random().toString(34).slice(2);
-	};
+	function addRecipe(_ref) {
+		var id = _ref.id;
+		var name = _ref.name;
+		var ingredients = _ref.ingredients;
 
-	function addRecipe(name, ingredients) {
 		return {
 			type: ADD_RECIPE,
 			data: {
-				id: uid(),
+				id: id,
 				name: name,
 				ingredients: ingredients
 			}
@@ -22948,12 +22979,36 @@
 		};
 	};
 
-	function editRecipe(id, name, ingredients) {
+	function editRecipe(_ref2) {
+		var id = _ref2.id;
+		var name = _ref2.name;
+		var ingredients = _ref2.ingredients;
+
 		return {
 			type: EDIT_RECIPE,
 			id: id,
 			name: name,
 			ingredients: ingredients
+		};
+	}
+
+	function loadRecipes(recipes) {
+		return {
+			type: LOAD_RECIPES,
+			recipes: recipes
+		};
+	}
+
+	function toggleAddRecipe() {
+		return {
+			type: TOGGLE_ADD_RECIPE
+		};
+	}
+
+	function toggleEditRecipe(id) {
+		return {
+			type: TOGGLE_EDIT_RECIPE,
+			id: id
 		};
 	}
 
@@ -22966,21 +23021,79 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.TestList = undefined;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
 
 	var _reactRedux = __webpack_require__(186);
 
-	var _components = __webpack_require__(203);
+	var _RecipeList = __webpack_require__(203);
+
+	var _RecipeList2 = _interopRequireDefault(_RecipeList);
+
+	var _ToggleAddRecipeButtonContainer = __webpack_require__(209);
+
+	var _ToggleAddRecipeButtonContainer2 = _interopRequireDefault(_ToggleAddRecipeButtonContainer);
+
+	var _AddRecipeContainer = __webpack_require__(210);
+
+	var _AddRecipeContainer2 = _interopRequireDefault(_AddRecipeContainer);
+
+	var _EditRecipeContainer = __webpack_require__(211);
+
+	var _EditRecipeContainer2 = _interopRequireDefault(_EditRecipeContainer);
+
+	var _actions = __webpack_require__(201);
+
+	var _utility = __webpack_require__(208);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var App = _react2.default.createClass({
+		displayName: 'App',
+
+		componentDidMount: function componentDidMount() {
+			var recipes = _utility.Utility.getRecipes() || [];
+			this.props.loadRecipes(recipes);
+		},
+
+		componentDidUpdate: function componentDidUpdate(prevProps, prevState) {
+			_utility.Utility.updateRecipes(this.props.recipes);
+		},
+
+		render: function render() {
+			var _this = this;
+
+			var editingRecipe = this.props.recipes.filter(function (recipe) {
+				return recipe.id === _this.props.editingRecipe;
+			});
+			editingRecipe = editingRecipe[0];
+
+			return _react2.default.createElement(
+				'div',
+				null,
+				_react2.default.createElement(_RecipeList2.default, null),
+				_react2.default.createElement(_ToggleAddRecipeButtonContainer2.default, null),
+				this.props.addingRecipe ? _react2.default.createElement(_AddRecipeContainer2.default, null) : null,
+				this.props.editingRecipe ? _react2.default.createElement(_EditRecipeContainer2.default, { id: this.props.editingRecipe, name: editingRecipe.name, ingredients: editingRecipe.ingredients }) : null
+			);
+		}
+	});
 
 	var mapStateToProps = function mapStateToProps(state) {
-		return { recipes: state };
+		return state;
 	};
 
 	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
-		return {};
+		return {
+			loadRecipes: function loadRecipes(recipes) {
+				dispatch((0, _actions.loadRecipes)(recipes));
+			}
+		};
 	};
 
-	var TestList = exports.TestList = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_components.Test);
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(App);
 
 /***/ },
 /* 203 */
@@ -22991,7 +23104,213 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.Test = Test;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(186);
+
+	var _Recipe = __webpack_require__(204);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			recipes: state.recipes
+		};
+	};
+
+	var RecipeList = function RecipeList(_ref) {
+		var recipes = _ref.recipes;
+
+		return _react2.default.createElement(
+			'div',
+			{ className: 'recipe-list' },
+			recipes.map(function (recipe) {
+				return _react2.default.createElement(_Recipe.Recipe, { key: recipe.id,
+					id: recipe.id,
+					recipeTitle: recipe.name,
+					ingredients: recipe.ingredients
+				});
+			})
+		);
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps)(RecipeList);
+
+/***/ },
+/* 204 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.Recipe = undefined;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _IngredientList = __webpack_require__(205);
+
+	var _IngredientList2 = _interopRequireDefault(_IngredientList);
+
+	var _Button = __webpack_require__(207);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Recipe = _react2.default.createClass({
+		displayName: 'Recipe',
+
+		getInitialState: function getInitialState() {
+			return {
+				ingredientsVisible: false
+			};
+		},
+
+		handleClick: function handleClick() {
+			this.setState({
+				ingredientsVisible: !this.state.ingredientsVisible
+			});
+		},
+
+		render: function render() {
+			return _react2.default.createElement(
+				'div',
+				{
+					className: 'recipe',
+					onClick: this.handleClick
+				},
+				_react2.default.createElement(
+					'h1',
+					null,
+					this.props.recipeTitle
+				),
+				_react2.default.createElement(_IngredientList2.default, {
+					visible: this.state.ingredientsVisible,
+					ingredients: this.props.ingredients,
+					recipeId: this.props.id
+				})
+			);
+		}
+	});
+
+	exports.Recipe = Recipe;
+
+/***/ },
+/* 205 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(186);
+
+	var _actions = __webpack_require__(201);
+
+	var _Ingredient = __webpack_require__(206);
+
+	var _Button = __webpack_require__(207);
+
+	var _utility = __webpack_require__(208);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var IngredientList = _react2.default.createClass({
+		displayName: 'IngredientList',
+
+		editRecipe: function editRecipe(e) {
+			e.stopPropagation();
+			this.props.toggleEditRecipe(this.props.recipeId);
+		},
+
+		removeRecipe: function removeRecipe(e) {
+			e.stopPropagation();
+			this.props.removeRecipe(this.props.recipeId);
+		},
+
+		render: function render() {
+			if (this.props.visible) {
+				return _react2.default.createElement(
+					'div',
+					{ className: 'ingredient-list' },
+					_react2.default.createElement(
+						'h2',
+						null,
+						'Ingredients'
+					),
+					_react2.default.createElement('hr', null),
+					_react2.default.createElement(
+						'ul',
+						null,
+						this.props.ingredients.map(function (ingredient, index) {
+							return _react2.default.createElement(
+								'li',
+								{ key: index },
+								_react2.default.createElement(_Ingredient.Ingredient, { ingredientTitle: ingredient })
+							);
+						})
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'edit-button' },
+						_react2.default.createElement(_Button.Button, {
+							handleClick: this.editRecipe,
+							text: "Edit Recipe"
+						})
+					),
+					_react2.default.createElement(
+						'div',
+						{ className: 'delete-button' },
+						_react2.default.createElement(_Button.Button, {
+							handleClick: this.removeRecipe,
+							text: "Delete Recipe"
+						})
+					)
+				);
+			} else {
+				return null;
+			}
+		}
+	});
+
+	var mapStateToProps = function mapStateToProps(state) {
+		return state;
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			removeRecipe: function removeRecipe(id) {
+				dispatch((0, _actions.removeRecipe)(id));
+			},
+			toggleEditRecipe: function toggleEditRecipe(id) {
+				dispatch((0, _actions.toggleEditRecipe)(id));
+			}
+		};
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(IngredientList);
+
+/***/ },
+/* 206 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.Ingredient = undefined;
 
 	var _react = __webpack_require__(1);
 
@@ -22999,30 +23318,355 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	function Test(props) {
-		var recipes = props.recipes;
+	var Ingredient = exports.Ingredient = function Ingredient(_ref) {
+		var ingredientTitle = _ref.ingredientTitle;
 
 		return _react2.default.createElement(
-			'ul',
+			'p',
 			null,
-			recipes.map(function (recipe) {
-				return _react2.default.createElement(
-					'li',
-					{ key: recipe.id },
-					_react2.default.createElement(
-						'h3',
-						null,
-						recipe.name
-					),
-					_react2.default.createElement(
-						'h4',
-						null,
-						recipe.ingredients.toString()
-					)
-				);
-			})
+			ingredientTitle
 		);
 	};
+
+/***/ },
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.Button = undefined;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var Button = exports.Button = function Button(props) {
+		var handleClick = props.handleClick;
+		var text = props.text;
+
+
+		return _react2.default.createElement(
+			'button',
+			{ onClick: handleClick },
+			text
+		);
+	};
+
+/***/ },
+/* 208 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	var Utility = exports.Utility = function () {
+		var getRecipes = function getRecipes() {
+			var recipesJSON = window.localStorage.getItem('recipes');
+			return JSON.parse(recipesJSON);
+		};
+
+		var updateRecipes = function updateRecipes(recipes) {
+			var recipesJSON = JSON.stringify(recipes);
+			window.localStorage.setItem('recipes', recipesJSON);
+		};
+
+		var uid = function uid() {
+			return Math.random().toString(34).slice(2);
+		};
+
+		return {
+			getRecipes: getRecipes,
+			updateRecipes: updateRecipes,
+			uid: uid
+		};
+	}();
+
+/***/ },
+/* 209 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(186);
+
+	var _Button = __webpack_require__(207);
+
+	var _actions = __webpack_require__(201);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var mapStateToProps = function mapStateToProps(state) {
+		return {
+			text: 'Add Recipe'
+		};
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			handleClick: function handleClick() {
+				dispatch((0, _actions.toggleAddRecipe)());
+			}
+		};
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(_Button.Button);
+
+/***/ },
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(186);
+
+	var _Button = __webpack_require__(207);
+
+	var _actions = __webpack_require__(201);
+
+	var _utility = __webpack_require__(208);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var AddRecipeContainer = _react2.default.createClass({
+		displayName: 'AddRecipeContainer',
+
+		addRecipe: function addRecipe() {
+			var name = this.myRecipeTitle.value;
+			var ingredients = this.myRecipeIngredients.value;
+
+			var hasEmptyFields = name === '' || ingredients === '';
+			if (hasEmptyFields) return;
+
+			var newRecipe = {
+				id: _utility.Utility.uid(),
+				name: name,
+				ingredients: ingredients.split(',')
+			};
+			this.props.saveNewRecipe(newRecipe);
+			this.resetForm();
+		},
+
+		resetForm: function resetForm() {
+			this.myRecipeTitle.value = '';
+			this.myRecipeIngredients.value = '';
+			this.props.toggleAddRecipe();
+		},
+
+		render: function render() {
+			var _this = this;
+
+			return _react2.default.createElement(
+				'div',
+				{ className: 'background' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'add-recipe' },
+					_react2.default.createElement(
+						'h1',
+						null,
+						'Add New Recipe'
+					),
+					_react2.default.createElement('hr', null),
+					_react2.default.createElement(
+						'div',
+						{ className: 'recipe-input' },
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: 'name' },
+							'Name'
+						),
+						_react2.default.createElement('input', {
+							type: 'text',
+							id: 'name',
+							placeholder: 'Enter recipe title',
+							ref: function ref(_ref) {
+								return _this.myRecipeTitle = _ref;
+							}
+						}),
+						_react2.default.createElement('br', null),
+						_react2.default.createElement(
+							'label',
+							{ htmlFor: 'ingredients' },
+							'Ingredients'
+						),
+						_react2.default.createElement('textarea', {
+							id: 'ingredients',
+							placeholder: 'Enter comma separated list of ingredients',
+							ref: function ref(_ref2) {
+								return _this.myRecipeIngredients = _ref2;
+							}
+						})
+					),
+					_react2.default.createElement(_Button.Button, {
+						text: "Save Recipe",
+						handleClick: this.addRecipe
+					})
+				)
+			);
+		}
+	});
+
+	var mapStateToProps = function mapStateToProps(state) {
+		return state;
+	};
+
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			saveNewRecipe: function saveNewRecipe(newRecipe) {
+				dispatch((0, _actions.addRecipe)(newRecipe));
+			},
+			toggleAddRecipe: function toggleAddRecipe() {
+				dispatch((0, _actions.toggleAddRecipe)());
+			}
+		};
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(AddRecipeContainer);
+
+/***/ },
+/* 211 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRedux = __webpack_require__(186);
+
+	var _Button = __webpack_require__(207);
+
+	var _actions = __webpack_require__(201);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var EditRecipeContainer = _react2.default.createClass({
+		displayName: 'EditRecipeContainer',
+
+		editRecipe: function editRecipe(e) {
+			e.stopPropagation();
+
+			var newTitle = this.myRecipeTitle.value;
+			var newIngredients = this.myRecipeIngredients.value.split(',');
+			this.props.editRecipe({
+				id: this.props.id,
+				name: newTitle,
+				ingredients: newIngredients
+			});
+
+			this.resetForm();
+		},
+
+		resetForm: function resetForm() {
+			this.myRecipeTitle.value = '';
+			this.myRecipeIngredients.value = '';
+			this.props.toggleEditRecipe(this.props.id);
+		},
+
+		render: function render() {
+			var _this = this;
+
+			return _react2.default.createElement(
+				'div',
+				{ className: 'background' },
+				_react2.default.createElement(
+					'div',
+					{ className: 'edit-recipe' },
+					_react2.default.createElement(
+						'h1',
+						null,
+						'Editing Recipe'
+					),
+					_react2.default.createElement('hr', null),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: 'name' },
+						'Name'
+					),
+					_react2.default.createElement('input', {
+						type: 'text',
+						id: 'name',
+						placeholder: 'Enter recipe title',
+						ref: function ref(_ref) {
+							return _this.myRecipeTitle = _ref;
+						},
+						defaultValue: this.props.name
+					}),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(
+						'label',
+						{ htmlFor: 'ingredients' },
+						'Ingredients'
+					),
+					_react2.default.createElement('textarea', {
+						id: 'ingredients',
+						placeholder: 'Enter comma separated list of ingredients',
+						ref: function ref(_ref2) {
+							return _this.myRecipeIngredients = _ref2;
+						},
+						defaultValue: this.props.ingredients.join(', ')
+					}),
+					_react2.default.createElement('br', null),
+					_react2.default.createElement(_Button.Button, {
+						handleClick: this.editRecipe,
+						text: "Edit Recipe"
+					})
+				)
+			);
+		}
+	});
+
+	var mapStateToProps = function mapStateToProps(state) {
+		return state;
+	};
+	var mapDispatchToProps = function mapDispatchToProps(dispatch) {
+		return {
+			editRecipe: function editRecipe(_ref3) {
+				var id = _ref3.id;
+				var name = _ref3.name;
+				var ingredients = _ref3.ingredients;
+
+				dispatch((0, _actions.editRecipe)({
+					id: id,
+					name: name,
+					ingredients: ingredients
+				}));
+			},
+			toggleEditRecipe: function toggleEditRecipe(id) {
+				dispatch((0, _actions.toggleEditRecipe)(id));
+			}
+		};
+	};
+
+	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(EditRecipeContainer);
 
 /***/ }
 /******/ ]);

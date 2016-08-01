@@ -20,6 +20,8 @@ const IngredientList = React.createClass({
 		if(this.props.visible) {
 			return (
 				<div className="ingredient-list">
+					<h2>Ingredients</h2>
+					<hr />
 					<ul>
 						{this.props.ingredients.map((ingredient, index) => (
 							<li key={index}>
@@ -27,14 +29,18 @@ const IngredientList = React.createClass({
 							</li>
 						))}
 					</ul>
-					<Button
-						handleClick={this.editRecipe}
-						text={"Edit Recipe"}
-					/>
-					<Button
-						handleClick={this.removeRecipe}
-						text={"Delete Recipe"}
-					/>
+					<div className="edit-button">
+						<Button
+							handleClick={this.editRecipe}
+							text={"Edit Recipe"}
+						/>
+					</div>
+					<div className="delete-button">
+						<Button
+							handleClick={this.removeRecipe}
+							text={"Delete Recipe"}
+						/>
+					</div>
 				</div>
 
 			);

@@ -1,0 +1,87 @@
+body {
+  font-family: 'Helvetica', sans-serif;
+  padding: 21px; }
+
+h1,
+h2 {
+  font-weight: 300;
+  margin: 0; }
+
+button {
+  color: #fff;
+  cursor: pointer;
+  background-color: #337ab7;
+  border: none;
+  border-radius: 6px;
+  font-size: 21px;
+  padding: 12px; }
+
+.recipe-list {
+  background-color: #f5f5f5;
+  border: 1px solid #e3e3e3;
+  border-radius: 4px;
+  padding: 21px 0 47px 0;
+  margin-bottom: 21px; }
+
+.recipe {
+  background-color: #dff0d8;
+  color: #3c763d;
+  margin: 16px auto 8px auto;
+  padding: 8px;
+  width: 90%; }
+  .recipe h1 {
+    cursor: pointer; }
+
+.ingredient-list {
+  background-color: white;
+  margin: 8px 0 0 0;
+  padding: 21px 0 0 0; }
+  .ingredient-list h2 {
+    text-align: center; }
+  .ingredient-list hr {
+    border: 1px solid #eeeeee;
+    width: 90%; }
+  .ingredient-list .edit-button,
+  .ingredient-list .delete-button {
+    display: inline-block;
+    margin: 8px; }
+  .ingredient-list .edit-button button,
+  .ingredient-list .delete-button button {
+    font-size: 16px; }
+  .ingredient-list .delete-button button {
+    background-color: #d9534f; }
+
+.background {
+  background-color: rgba(0, 0, 0, 0.6);
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%; }
+
+.edit-recipe,
+.add-recipe {
+  background-color: white;
+  border: 1px solid black;
+  border-radius: 4px;
+  margin: 0 auto;
+  padding: 12px;
+  position: relative;
+  top: 70px;
+  width: 95%; }
+  .edit-recipe label,
+  .add-recipe label {
+    display: block;
+    margin-top: 16px; }
+  .edit-recipe input[type="text"],
+  .edit-recipe textarea,
+  .add-recipe input[type="text"],
+  .add-recipe textarea {
+    font-size: 16px;
+    margin-top: 8px;
+    width: 50%; }
+  .edit-recipe button,
+  .add-recipe button {
+    margin: 12px 0 21px 0; }
+
+/*# sourceMappingURL=style.css.map */

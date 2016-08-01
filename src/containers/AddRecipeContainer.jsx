@@ -29,28 +29,31 @@ const AddRecipeContainer = React.createClass({
 
 	render: function() {
 		return (
-			<div className="add-recipe">
-				<div className="recipe-input">
-					<label htmlFor="name">Name</label>
-					<input
-						type="text"
-						id="name"
-						placeholder="Enter recipe title"
-						ref={(ref) => this.myRecipeTitle = ref}
-					/>
-					<br />
-					<label htmlFor="ingredients">Ingredients</label>
-					<input
-						type="text"
-						id="ingredients"
-						placeholder="Enter comma separated list of ingredients"
-						ref={(ref) => this.myRecipeIngredients = ref}
+			<div className="background">
+				<div className="add-recipe">
+					<h1>Add New Recipe</h1>
+					<hr />
+					<div className="recipe-input">
+						<label htmlFor="name">Name</label>
+						<input
+							type="text"
+							id="name"
+							placeholder="Enter recipe title"
+							ref={(ref) => this.myRecipeTitle = ref}
+						/>
+						<br />
+						<label htmlFor="ingredients">Ingredients</label>
+						<textarea
+							id="ingredients"
+							placeholder="Enter comma separated list of ingredients"
+							ref={(ref) => this.myRecipeIngredients = ref}
+						/>
+					</div>
+					<Button
+						text={"Save Recipe"}
+						handleClick={this.addRecipe}
 					/>
 				</div>
-				<Button
-					text={"Save Recipe"}
-					handleClick={this.addRecipe}
-				/>
 			</div>
 		);
 	}
