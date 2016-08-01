@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from '../components/Button';
+import { CloseButton } from '../components/CloseButton';
 import { addRecipe, toggleAddRecipe } from '../actions';
 import { Utility } from '../utility';
 
@@ -32,6 +33,9 @@ const AddRecipeContainer = React.createClass({
 			<div className="background">
 				<div className="add-recipe">
 					<h1>Add New Recipe</h1>
+					<CloseButton
+						handleClick={this.props.toggleAddRecipe}
+					/>
 					<hr />
 					<div className="recipe-input">
 						<label htmlFor="name">Name</label>

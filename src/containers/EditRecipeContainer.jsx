@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from '../components/Button';
+import { CloseButton } from '../components/CloseButton';
 import { editRecipe, toggleEditRecipe } from '../actions';
 
 const EditRecipeContainer = React.createClass({
@@ -29,6 +30,9 @@ const EditRecipeContainer = React.createClass({
 			<div className="background">
 				<div className="edit-recipe">
 					<h1>Editing Recipe</h1>
+					<CloseButton
+						handleClick={() => this.props.toggleEditRecipe(this.props.id)}
+					/>
 					<hr />
 					<label htmlFor="name">Name</label>
 					<input
