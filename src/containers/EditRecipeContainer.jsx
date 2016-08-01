@@ -1,13 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { Button } from '../components/Button';
-import { editRecipe } from '../actions';
+import { editRecipe, toggleEditRecipe } from '../actions';
 
 const EditRecipeContainer = React.createClass({
 	editRecipe: function(e) {
 		e.stopPropagation();
-		console.log(this.myRecipeTitle.value);
-		console.log(this.myRecipeIngredients.value);
+
+		const newTitle = this.myRecipeTitle.value;
+		const newIngredients = this.myRecipeIngredients.value.split(',');
+		this.props.editRecipe({
+			id: this.props.id,
+			name: newTitle,
+			ingredients: newIngredients
+		});
+
+		this.resetForm();
+	},
+
+	resetForm: function() {
+		this.myRecipeTitle.value = '';
+		this.myRecipeIngredients.value = '';
+		this.props.toggleEditRecipe(this.props.id);
 	},
 
 	render: function() {
@@ -23,7 +37,7 @@ const EditRecipeContainer = React.createClass({
 					id="name"
 					placeholder="Enter recipe title"
 					ref={(ref) => this.myRecipeTitle = ref}
-					defaultValue={name}
+					defaultValue={this.props.name}
 				/>
 				<br />
 				<label htmlFor="ingredients">Ingredients</label>
@@ -32,7 +46,7 @@ const EditRecipeContainer = React.createClass({
 					id="ingredients"
 					placeholder="Enter comma separated list of ingredients"
 					ref={(ref) => this.myRecipeIngredients = ref}
-					defaultValue={ingredients}
+					defaultValue={this.props.ingredients.join(', ')}
 				/>
 				<br />
 				<Button
@@ -44,4 +58,23 @@ const EditRecipeContainer = React.createClass({
 	}
 });
 
-export default EditRecipeContainer;
+const mapStateToProps = (state) => state;
+const mapDispatchToProps = (dispatch) => {
+	return {
+		editRecipe: ({ id, name, ingredients }) => {
+			dispatch(editRecipe({
+				id: id,
+				name: name,
+				ingredients: ingredients
+			}));
+		},
+		toggleEditRecipe: (id) => {
+			dispatch(toggleEditRecipe(id));
+		}
+	};
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(EditRecipeContainer);

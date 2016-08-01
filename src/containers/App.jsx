@@ -19,12 +19,17 @@ const App = React.createClass({
 	},
 
 	render: function() {
+		let editingRecipe = this.props.recipes.filter((recipe) => {
+			return recipe.id === this.props.editingRecipe;
+		});
+		editingRecipe = editingRecipe[0];
+
 		return (
 			<div>
 				<RecipeList />
 				<ToggleAddRecipeButtonContainer />
 				{this.props.addingRecipe ? <AddRecipeContainer /> : null}
-				{this.props.editingRecipe ? <EditRecipeContainer /> : null}
+				{this.props.editingRecipe ? <EditRecipeContainer id={this.props.editingRecipe} name={editingRecipe.name} ingredients={editingRecipe.ingredients} /> : null}
 			</div>
 		);
 	}

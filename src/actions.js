@@ -23,7 +23,7 @@ export function removeRecipe(id) {
 	};
 };
 
-export function editRecipe(id, {name, ingredients}) {
+export function editRecipe({ id, name, ingredients }) {
 	return {
 		type: EDIT_RECIPE,
 		id: id,
