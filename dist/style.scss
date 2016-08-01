@@ -89,6 +89,15 @@ button {
 	top: 70px;
 	width: 95%;
 
+	h1 {
+		display: inline-block;
+	}
+
+	.close-button {
+		display: inline-block;
+		margin-left: 100px;
+	}
+
 	label {
 		display: block;
 		margin-top: 16px;

@@ -69,6 +69,13 @@ button {
   position: relative;
   top: 70px;
   width: 95%; }
+  .edit-recipe h1,
+  .add-recipe h1 {
+    display: inline-block; }
+  .edit-recipe .close-button,
+  .add-recipe .close-button {
+    display: inline-block;
+    margin-left: 100px; }
   .edit-recipe label,
   .add-recipe label {
     display: block;

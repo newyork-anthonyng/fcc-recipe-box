@@ -23444,6 +23444,8 @@
 
 	var _Button = __webpack_require__(207);
 
+	var _CloseButton = __webpack_require__(212);
+
 	var _actions = __webpack_require__(201);
 
 	var _utility = __webpack_require__(208);
@@ -23489,6 +23491,9 @@
 						null,
 						'Add New Recipe'
 					),
+					_react2.default.createElement(_CloseButton.CloseButton, {
+						handleClick: this.props.toggleAddRecipe
+					}),
 					_react2.default.createElement('hr', null),
 					_react2.default.createElement(
 						'div',
@@ -23564,6 +23569,8 @@
 
 	var _Button = __webpack_require__(207);
 
+	var _CloseButton = __webpack_require__(212);
+
 	var _actions = __webpack_require__(201);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -23605,6 +23612,11 @@
 						null,
 						'Editing Recipe'
 					),
+					_react2.default.createElement(_CloseButton.CloseButton, {
+						handleClick: function handleClick() {
+							return _this.props.toggleEditRecipe(_this.props.id);
+						}
+					}),
 					_react2.default.createElement('hr', null),
 					_react2.default.createElement(
 						'label',
@@ -23667,6 +23679,38 @@
 	};
 
 	exports.default = (0, _reactRedux.connect)(mapStateToProps, mapDispatchToProps)(EditRecipeContainer);
+
+/***/ },
+/* 212 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	exports.CloseButton = undefined;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Button = __webpack_require__(207);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var CloseButton = exports.CloseButton = function CloseButton(props) {
+		var handleClick = props.handleClick;
+
+		return _react2.default.createElement(
+			'div',
+			{ className: 'close-button' },
+			_react2.default.createElement(_Button.Button, {
+				handleClick: handleClick,
+				text: "X"
+			})
+		);
+	};
 
 /***/ }
 /******/ ]);
